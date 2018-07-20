@@ -1,6 +1,5 @@
 package com.example.appName.presentation.simpleActivity
 
-import com.example.appName.presentation.base.KEY_SAVED_ACTIVITY_VIEW_STATE
 import dagger.Module
 import dagger.Provides
 import java.util.*
