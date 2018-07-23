@@ -1,10 +1,10 @@
-package com.example.appName.presentation.simpleActivity
+package com.example.appName.presentation.random
 
 import java.io.Serializable
 
-data class SimpleViewState(val firstRoll: Int = 0,
+data class RandomViewState(val firstRoll: Int = 0,
                            val secondRoll: Int = 0) : Serializable {
-    constructor(previous: SimpleViewState,
+    constructor(previous: RandomViewState,
                 firstRoll: Int = previous.firstRoll,
                 secondRoll: Int = previous.secondRoll) : this(firstRoll, secondRoll)
 }

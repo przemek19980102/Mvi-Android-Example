@@ -1,24 +1,26 @@
-package com.example.appName.presentation.simpleActivity
+package com.example.appName.presentation.random
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.example.appName.R
+import com.example.appName.presentation.random.di.DaggerRandomComponent
+import com.example.appName.presentation.random.di.RandomModule
 import com.jakewharton.rxbinding2.view.RxView
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_simple.*
 import javax.inject.Inject
 
 const val KEY_SAVED_ACTIVITY_VIEW_STATE = "viewState"
 
-class SimpleActivity : AppCompatActivity(), SimpleView {
-    //region Private methods
+class RandomActivity : AppCompatActivity(), RandomView {
+    //region Properties
     @Inject
-    lateinit var presenter: SimplePresenter
+    lateinit var presenter: RandomPresenter
 
-    private val disposables: CompositeDisposable = CompositeDisposable()
+    private var disposable: Disposable? = null
     //endregion
 
     //region Intents
@@ -35,8 +37,8 @@ class SimpleActivity : AppCompatActivity(), SimpleView {
 
         setContentView(R.layout.activity_simple)
 
-        DaggerSimpleComponent.builder()
-                .simpleModule(SimpleModule(this))
+        DaggerRandomComponent.builder()
+                .randomModule(RandomModule(this))
                 .build().inject(this)
 
         subscribeToViewState()
@@ -46,7 +48,7 @@ class SimpleActivity : AppCompatActivity(), SimpleView {
         super.onDestroy()
 
         presenter.dispose()
-        disposables.dispose()
+        disposable?.dispose()
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
@@ -60,11 +62,11 @@ class SimpleActivity : AppCompatActivity(), SimpleView {
         val viewStateObservable = presenter.getStateObservable().subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribe(this::render)
 
-        disposables.add(viewStateObservable)
+        disposable = viewStateObservable
     }
     //endregion
 
-    private fun render(viewState: SimpleViewState) {
+    private fun render(viewState: RandomViewState) {
         randomFirstNumber.text = viewState.firstRoll.toString()
         randomSecondNumber.text = viewState.secondRoll.toString()
     }

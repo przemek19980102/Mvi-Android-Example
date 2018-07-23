@@ -1,8 +1,8 @@
-package com.example.appName.presentation.simpleActivity
+package com.example.appName.presentation.random
 
 import io.reactivex.Observable
 
-interface SimpleView {
+interface RandomView {
     val rollFirstIntent : Observable<Any>
     val rollSecondIntent : Observable<Any>
 }
