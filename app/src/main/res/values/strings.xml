@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">MVI Example</string>
+    <string name="username_blank_error">Username cannot be empty</string>
+    <string name="username_invalid_error">Username has to be longer than 5 characters</string>
+    <string name="password_blank_error">Password cannot be empty</string>
+    <string name="password_invalid_error">Password has to be at least 7 characters long and contain at least one capital letter</string>
+    <string name="exception_message_generic">Error: %1$s</string>
+    <string name="exception_message_http">There was problem connecting to web service. Please check your connection and try again.</string>
+    <string name="login.login">Login</string>
+    <string name="login.password">Password</string>
+    <string name="login.register">Register</string>
 </resources>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ViewSwitcher xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/loginLoadingSwitcher"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:inAnimation="@android:anim/fade_in"
+    android:orientation="vertical"
+    android:outAnimation="@android:anim/fade_out"
+    android:paddingBottom="@dimen/margin_quadruple"
+    android:paddingLeft="@dimen/margin_double"
+    android:paddingRight="@dimen/margin_double"
+    android:paddingTop="@dimen/margin_quadruple">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <EditText
+            android:id="@+id/loginUsername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/login.login"
+            android:inputType="text"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/loginPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:hint="@string/login.password"
+            android:inputType="textPassword"
+            app:layout_constraintTop_toBottomOf="@id/loginUsername" />
+
+        <Button
+            android:id="@+id/loginButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/login.login"
+            app:layout_constraintBottom_toTopOf="@id/loginRegisterButton" />
+
+        <Button
+            android:id="@+id/loginRegisterButton"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/login.register"
+            app:layout_constraintBottom_toBottomOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</ViewSwitcher>

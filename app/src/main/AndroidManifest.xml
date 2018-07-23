@@ -16,6 +16,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".presentation.form.FormActivity" />
+        <activity
+            android:name=".presentation.login.LoginActivity"
+            android:exported="true" />
     </application>
 </manifest>
