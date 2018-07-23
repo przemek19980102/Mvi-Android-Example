@@ -1,6 +1,7 @@
-package com.example.appName.presentation.form
+package com.example.appName.presentation.form.di
 
 import com.example.appName.presentation.di.ActivityScope
+import com.example.appName.presentation.form.FormActivity
 import dagger.Component
 
 @ActivityScope
