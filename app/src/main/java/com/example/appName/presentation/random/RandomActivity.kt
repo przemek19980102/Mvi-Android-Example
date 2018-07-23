@@ -38,7 +38,7 @@ class RandomActivity : AppCompatActivity(), RandomView {
         setContentView(R.layout.activity_simple)
 
         DaggerRandomComponent.builder()
-                .randomModule(RandomModule(this))
+                .randomModule(RandomModule(this, savedInstanceState))
                 .build().inject(this)
 
         subscribeToViewState()
