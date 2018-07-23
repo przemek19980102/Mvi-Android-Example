@@ -1,5 +1,6 @@
 package com.example.appName.presentation.login.di
 
+import android.os.Bundle
 import com.example.appName.presentation.login.KEY_SAVED_ACTIVITY_VIEW_STATE
 import com.example.appName.presentation.login.LoginActivity
 import com.example.appName.presentation.login.LoginView
@@ -8,14 +9,15 @@ import dagger.Module
 import dagger.Provides
 
 @Module
-class LoginModule(private val activity: LoginActivity) {
+class LoginModule(private val activity: LoginActivity,
+                  private val savedInstanceState: Bundle?) {
 
     @Provides
     fun provideLoginView(): LoginView = activity
 
     @Provides
     fun provideSavedViewState(): LoginViewState =
-            activity.intent.getSerializableExtra(
+            savedInstanceState?.getSerializable(
                     KEY_SAVED_ACTIVITY_VIEW_STATE) as? LoginViewState
                     ?: LoginViewState()
 }

@@ -5,6 +5,7 @@ import android.widget.EditText
 import com.example.appName.R
 import com.example.appName.data.di.DataModule
 import com.example.appName.presentation.base.BaseActivity
+import com.example.appName.presentation.login.di.DaggerLoginComponent
 import com.example.appName.presentation.login.di.LoginModule
 import com.example.appName.presentation.login.validation.PasswordValidator
 import com.example.appName.presentation.login.validation.UsernameValidator
@@ -38,6 +39,7 @@ class LoginActivity : BaseActivity<LoginViewState, LoginPresenter>(), LoginView 
     private fun createTextChangesObservable(editText: EditText) =
             RxTextView.textChanges(editText)
                     .map { it.toString() }
+                    .skip(1)
                     .debounce(100L, TimeUnit.MILLISECONDS)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,12 +48,18 @@ class LoginActivity : BaseActivity<LoginViewState, LoginPresenter>(), LoginView 
         setContentView(R.layout.activity_login)
 
         DaggerLoginComponent.builder()
-                .loginModule(LoginModule(this))
+                .loginModule(LoginModule(this, savedInstanceState))
                 .activityModule(activityModule)
                 .dataModule(DataModule())
                 .build().inject(this)
 
         subscribeToViewState()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        outState.putSerializable(KEY_SAVED_ACTIVITY_VIEW_STATE, presenter.getCurrentViewState())
     }
 
     override fun render(viewState: LoginViewState) {
