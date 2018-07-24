@@ -27,12 +27,11 @@ abstract class BaseFragment<VIEW_STATE : Serializable, PRESENTER : BasePresenter
         disposable?.dispose()
     }
 
-    abstract fun render(viewState: VIEW_STATE)
-
-
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
 
         outState.putSerializable(KEY_SAVED_FRAGMENT_STATE, presenter.getCurrentViewState())
     }
+
+    abstract fun render(viewState: VIEW_STATE)
 }

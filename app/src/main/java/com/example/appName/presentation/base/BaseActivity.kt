@@ -35,8 +35,6 @@ abstract class BaseActivity<VIEW_STATE : Serializable, PRESENTER : BasePresenter
                 else -> super.onOptionsItemSelected(item)
             }
 
-    abstract fun render(viewState: VIEW_STATE)
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -53,4 +51,6 @@ abstract class BaseActivity<VIEW_STATE : Serializable, PRESENTER : BasePresenter
         presenter.dispose()
         disposable?.dispose()
     }
+
+    abstract fun render(viewState: VIEW_STATE)
 }
