@@ -1,6 +1,6 @@
 package com.example.appName.presentation.login
 
-import com.example.appName.presentation.base.Presenter
+import com.example.appName.presentation.base.BasePresenter
 import com.example.appName.domain.UserRepository
 import com.example.appName.presentation.login.validation.PasswordValidator
 import com.example.appName.presentation.login.validation.UsernameValidator
@@ -11,7 +11,7 @@ import javax.inject.Inject
 class LoginPresenter @Inject constructor(private val view: LoginView,
                                          private val userRepository: UserRepository,
                                          private val applicationNavigator: ApplicationNavigator,
-                                         initialState: LoginViewState) : Presenter<LoginViewState, LoginPartialState>() {
+                                         initialState: LoginViewState) : BasePresenter<LoginViewState, LoginPartialState>() {
 
     //region Intent methods
     init {
