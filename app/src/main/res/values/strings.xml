@@ -6,7 +6,8 @@
     <string name="password_invalid_error">Password has to be at least 7 characters long and contain at least one capital letter</string>
     <string name="exception_message_generic">Error: %1$s</string>
     <string name="exception_message_http">There was problem connecting to web service. Please check your connection and try again.</string>
-    <string name="login.login">Login</string>
+    <string name="login.username">Username</string>
     <string name="login.password">Password</string>
     <string name="login.register">Register</string>
+    <string name="login.login">Login</string>
 </resources>

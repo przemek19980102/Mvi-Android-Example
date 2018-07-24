@@ -6,7 +6,6 @@ import com.example.appName.presentation.login.validation.PasswordValidator
 import com.example.appName.presentation.login.validation.UsernameValidator
 import com.example.appName.presentation.utils.ApplicationNavigator
 import io.reactivex.Observable
-import io.reactivex.functions.BiFunction
 import javax.inject.Inject
 
 class LoginPresenter @Inject constructor(private val view: LoginView,
@@ -32,28 +31,23 @@ class LoginPresenter @Inject constructor(private val view: LoginView,
                     .map { PasswordValidator.validate(it) }
                     .map { LoginPartialState.PasswordValidated(it) as LoginPartialState }
 
-    private fun createLoginObservable(): Observable<LoginPartialState> = Observable
-            .combineLatest<String, String, Pair<String, String>>(
-                    view.changeUsernameIntent,
-                    view.changeUsernameIntent,
-                    BiFunction { username, password -> Pair(username, password) })
-            .sample(view.loginIntent)
-            .flatMap { (username, password) ->
+    private fun createLoginObservable(): Observable<LoginPartialState> = view.loginIntent
+            .flatMap { loginData ->
                 userRepository
-                        .login(username, password).toObservable()
+                        .login(loginData.username, loginData.password).toObservable()
                         .map { LoginPartialState.LoginCompleted() as LoginPartialState }
-                        .doOnNext { applicationNavigator.goToMainScreen() }
+                        .doOnNext {
+                            applicationNavigator.apply {
+                                goToMainScreen()
+                                finishCurrentActivity()
+                            }
+                        }
                         .startWith(LoginPartialState.Loading())
                         .onErrorReturn { LoginPartialState.LoginError(it) }
             }
 
     private fun createRegisterObservable(): Observable<LoginPartialState> = view.registerIntent
-            .doOnNext {
-                applicationNavigator.apply {
-                    goToMainScreen()
-                    finishCurrentActivity()
-                }
-            }
+            .doOnNext { applicationNavigator.apply { goToRegisterActivity() } }
             .map { LoginPartialState.NoOp() }
 
     override fun reduceViewState(previousState: LoginViewState, partialState: LoginPartialState) =

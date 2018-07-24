@@ -30,8 +30,12 @@ class LoginActivity : BaseActivity<LoginViewState, LoginPresenter>(), LoginView 
     override val changePasswordIntent: Observable<String>
         get() = createTextChangesObservable(loginPassword)
 
-    override val loginIntent: Observable<Any>
-        get() = RxView.clicks(loginButton)
+    override val loginIntent: Observable<LoginData>
+        get() = RxView.clicks(loginButton).map {
+            val username = loginUsername.text.toString()
+            val password = loginPassword.text.toString()
+            LoginData(username, password)
+        }
 
     override val registerIntent: Observable<Any>
         get() = RxView.clicks(loginRegisterButton)
