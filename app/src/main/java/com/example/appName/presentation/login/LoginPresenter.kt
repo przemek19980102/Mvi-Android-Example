@@ -13,6 +13,7 @@ class LoginPresenter @Inject constructor(private val view: LoginView,
                                          private val applicationNavigator: ApplicationNavigator,
                                          initialState: LoginViewState) : Presenter<LoginViewState, LoginPartialState>() {
 
+    //region Intent methods
     init {
         subscribeToViewIntents(initialState,
                 createChangeUsernameObservable(),
@@ -49,6 +50,8 @@ class LoginPresenter @Inject constructor(private val view: LoginView,
     private fun createRegisterObservable(): Observable<LoginPartialState> = view.registerIntent
             .doOnNext { applicationNavigator.apply { goToRegisterActivity() } }
             .map { LoginPartialState.NoOp() }
+
+    //endregion
 
     override fun reduceViewState(previousState: LoginViewState, partialState: LoginPartialState) =
             when (partialState) {

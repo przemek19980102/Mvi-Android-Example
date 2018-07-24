@@ -10,6 +10,7 @@ import com.example.appName.presentation.login.di.LoginModule
 import com.example.appName.presentation.login.validation.PasswordValidator
 import com.example.appName.presentation.login.validation.UsernameValidator
 import com.example.appName.presentation.login.validation.getMessage
+import com.example.appName.presentation.utils.createTextChangesObservable
 import com.example.appName.presentation.utils.getMessage
 import com.jakewharton.rxbinding2.view.RxView
 import com.jakewharton.rxbinding2.widget.RxTextView
@@ -24,11 +25,12 @@ private const val LOADING_VIEW_INDEX = 1
 const val KEY_SAVED_ACTIVITY_VIEW_STATE = "viewState"
 
 class LoginActivity : BaseActivity<LoginViewState, LoginPresenter>(), LoginView {
+    //region Intents
     override val changeUsernameIntent: Observable<String>
-        get() = createTextChangesObservable(loginUsername)
+        get() = loginUsername.createTextChangesObservable()
 
     override val changePasswordIntent: Observable<String>
-        get() = createTextChangesObservable(loginPassword)
+        get() = loginPassword.createTextChangesObservable()
 
     override val loginIntent: Observable<LoginData>
         get() = RxView.clicks(loginButton).map {
@@ -39,13 +41,9 @@ class LoginActivity : BaseActivity<LoginViewState, LoginPresenter>(), LoginView 
 
     override val registerIntent: Observable<Any>
         get() = RxView.clicks(loginRegisterButton)
+    //endregion
 
-    private fun createTextChangesObservable(editText: EditText) =
-            RxTextView.textChanges(editText)
-                    .map { it.toString() }
-                    .skip(1)
-                    .debounce(100L, TimeUnit.MILLISECONDS)
-
+    //region Activity methods
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -65,7 +63,9 @@ class LoginActivity : BaseActivity<LoginViewState, LoginPresenter>(), LoginView 
 
         outState.putSerializable(KEY_SAVED_ACTIVITY_VIEW_STATE, presenter.getCurrentViewState())
     }
+    //endregion
 
+    //region Render methods
     override fun render(viewState: LoginViewState) {
         if (viewState.loginSuccess) {
             return
@@ -106,4 +106,5 @@ class LoginActivity : BaseActivity<LoginViewState, LoginPresenter>(), LoginView 
     private fun allInputsAreValid(viewState: LoginViewState) =
             (viewState.usernameValidationResult == UsernameValidator.ValidationResult.VALID &&
                     viewState.passwordValidationResult == PasswordValidator.ValidationResult.VALID)
+    //endregion
 }
