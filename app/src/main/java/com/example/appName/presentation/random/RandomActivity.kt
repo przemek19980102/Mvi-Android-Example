@@ -23,14 +23,6 @@ class RandomActivity : AppCompatActivity(), RandomView {
     private var disposable: Disposable? = null
     //endregion
 
-    //region Intents
-    override val rollFirstIntent: Observable<Any>
-        get() = RxView.clicks(randomRollFirstNumber)
-
-    override val rollSecondIntent: Observable<Any>
-        get() = RxView.clicks(randomRollSecondNumber)
-    //endregion
-
     //region Activity methods
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,8 +59,7 @@ class RandomActivity : AppCompatActivity(), RandomView {
     //endregion
 
     private fun render(viewState: RandomViewState) {
-        randomFirstNumber.text = viewState.firstRoll.toString()
-        randomSecondNumber.text = viewState.secondRoll.toString()
+        TODO("Render method not implemented")
     }
 
 }

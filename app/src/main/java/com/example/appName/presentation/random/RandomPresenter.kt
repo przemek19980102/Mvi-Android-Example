@@ -13,23 +13,8 @@ class RandomPresenter @Inject constructor(private val view: RandomView,
     private lateinit var viewIntentsDisposable: Disposable
 
     init {
-        subscribeToViewIntents(initialState, createRollFirstObservable(),
-                createRollSecondObservable())
+        TODO("Create observables and subscribe to view intents")
     }
-
-    private fun createRollFirstObservable(): Observable<RandomPartialState> {
-        return view.rollFirstIntent
-                .map { generateRandomNumber() }
-                .map { RandomPartialState.FirstRolled(it) }
-    }
-
-    private fun createRollSecondObservable(): Observable<RandomPartialState> {
-        return view.rollSecondIntent
-                .map { generateRandomNumber() }
-                .map { RandomPartialState.SecondRolled(it) }
-    }
-
-    private fun generateRandomNumber() = (random.nextInt().and(Integer.MAX_VALUE)) % 6 + 1
 
     private fun subscribeToViewIntents(initialState: RandomViewState,
                                        vararg observables: Observable<RandomPartialState>) {
@@ -39,13 +24,8 @@ class RandomPresenter @Inject constructor(private val view: RandomView,
                 .subscribe(stateSubject::onNext)
     }
 
-    private fun reduceViewState(previousState: RandomViewState, partialState: RandomPartialState) =
-            when (partialState) {
-                is RandomPartialState.FirstRolled ->
-                    RandomViewState(previousState, firstRoll = partialState.generatedNumber)
-                is RandomPartialState.SecondRolled ->
-                    RandomViewState(previousState, secondRoll = partialState.generatedNumber)
-            }
+    private fun reduceViewState(previousState: RandomViewState, partialState: RandomPartialState): RandomViewState =
+            TODO("Implement reduce method")
 
     //region Lifecycle methods
     fun getStateObservable() = stateSubject as Observable<RandomViewState>
