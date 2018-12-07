@@ -1,10 +1,7 @@
 package com.example.appName.presentation.random.di
 
 import android.os.Bundle
-import com.example.appName.presentation.random.KEY_SAVED_ACTIVITY_VIEW_STATE
-import com.example.appName.presentation.random.RandomActivity
-import com.example.appName.presentation.random.RandomView
-import com.example.appName.presentation.random.RandomViewState
+import com.example.appName.presentation.random.*
 import dagger.Module
 import dagger.Provides
 import java.util.*
@@ -24,4 +21,7 @@ class RandomModule(private val activity: RandomActivity,
 
     @Provides
     fun provideRandomNumberGenerator(): Random = Random()
+
+    @Provides
+    fun provideRandomPresenter(randomView: RandomView, random: Random, initialViewState: RandomViewState): RandomPresenter = RandomPresenterImpl(randomView, random, initialViewState)
 }

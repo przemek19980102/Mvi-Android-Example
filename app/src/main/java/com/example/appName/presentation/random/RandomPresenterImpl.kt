@@ -6,9 +6,15 @@ import io.reactivex.subjects.BehaviorSubject
 import java.util.*
 import javax.inject.Inject
 
-class RandomPresenter @Inject constructor(private val view: RandomView,
-                                          private val random: Random,
-                                          initialState: RandomViewState) {
+interface RandomPresenter {
+    fun getStateObservable(): Observable<RandomViewState>
+    fun getCurrentViewState(): RandomViewState?
+    fun dispose()
+}
+
+class RandomPresenterImpl(private val view: RandomView,
+                          private val random: Random,
+                          initialState: RandomViewState) : RandomPresenter {
     private val stateSubject: BehaviorSubject<RandomViewState> = BehaviorSubject.create()
     private lateinit var viewIntentsDisposable: Disposable
 
@@ -48,10 +54,10 @@ class RandomPresenter @Inject constructor(private val view: RandomView,
             }
 
     //region Lifecycle methods
-    fun getStateObservable() = stateSubject as Observable<RandomViewState>
+    override fun getStateObservable() = stateSubject as Observable<RandomViewState>
 
-    fun getCurrentViewState(): RandomViewState? = stateSubject.value
+    override fun getCurrentViewState(): RandomViewState? = stateSubject.value
 
-    fun dispose() = viewIntentsDisposable.dispose()
+    override fun dispose() = viewIntentsDisposable.dispose()
     //endregion
 }

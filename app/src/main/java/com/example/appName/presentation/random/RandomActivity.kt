@@ -1,6 +1,7 @@
 package com.example.appName.presentation.random
 
 import android.os.Bundle
+import android.support.annotation.VisibleForTesting
 import android.support.v7.app.AppCompatActivity
 import com.example.appName.R
 import com.example.appName.presentation.random.di.DaggerRandomComponent
@@ -58,7 +59,8 @@ class RandomActivity : AppCompatActivity(), RandomView {
         outState?.putSerializable(KEY_SAVED_ACTIVITY_VIEW_STATE, viewState)
     }
 
-    private fun subscribeToViewState() {
+    @VisibleForTesting
+    fun subscribeToViewState() {
         val viewStateObservable = presenter.getStateObservable().subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribe(this::render)
 
