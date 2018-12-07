@@ -10,7 +10,7 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.activity_simple.*
+import kotlinx.android.synthetic.main.activity_random.*
 import javax.inject.Inject
 
 const val KEY_SAVED_ACTIVITY_VIEW_STATE = "viewState"
@@ -35,7 +35,7 @@ class RandomActivity : AppCompatActivity(), RandomView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_simple)
+        setContentView(R.layout.activity_random)
 
         DaggerRandomComponent.builder()
                 .randomModule(RandomModule(this, savedInstanceState))
