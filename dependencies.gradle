@@ -5,17 +5,16 @@ ext {
 
     //Library versions
     supportLibrary = '27.1.1'
-    daggerVersion = '2.16'
     rxBinding = '2.1.1'
     ankoVersion = '0.10.5'
     retrofit = '2.4.0'
     gradlePlugin = '3.1.2'
     espressoVersion = '3.0.2'
+    koin = '1.0.2'
 
     implementationDependencies = [
             "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion",
             "com.android.support:appcompat-v7:$supportLibrary",
-            "com.google.dagger:dagger:$daggerVersion",
             "io.reactivex.rxjava2:rxjava:2.1.14",
             "io.reactivex.rxjava2:rxandroid:2.0.1",
             "io.reactivex.rxjava2:rxkotlin:2.2.0",
@@ -28,6 +27,9 @@ ext {
             "com.github.bumptech.glide:glide:4.7.1",
             "com.android.support.constraint:constraint-layout:1.1.2",
             "com.android.databinding:compiler:$gradlePlugin",
+            "org.koin:koin-android:$koin",
+            "org.koin:koin-android-scope:$koin",
+            "org.koin:koin-core-ext:$koin",
             "com.android.support:multidex:1.0.3"
     ]
 
@@ -50,9 +52,5 @@ ext {
             "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion",
             "com.android.tools.build:gradle:$gradlePlugin",
             "com.github.ben-manes:gradle-versions-plugin:0.20.0",
-    ]
-
-    kaptDependencies =[
-            "com.google.dagger:dagger-compiler:$daggerVersion"
     ]
 }

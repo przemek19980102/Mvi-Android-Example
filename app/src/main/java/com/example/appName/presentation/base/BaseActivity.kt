@@ -5,21 +5,18 @@ import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import android.view.WindowManager
 import com.example.appName.BuildConfig
-import com.example.appName.presentation.di.ActivityModule
+import com.example.appName.presentation.di.SINGLE_ACTIVITY_SCOPE
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import org.koin.android.scope.ext.android.bindScope
+import org.koin.android.scope.ext.android.getOrCreateScope
 import java.io.Serializable
-import javax.inject.Inject
 
 abstract class BaseActivity<VIEW_STATE : Serializable, PRESENTER : BasePresenter<VIEW_STATE, *>> : AppCompatActivity() {
     private var disposable: Disposable? = null
 
-    @Suppress("LeakingThis")
-    val activityModule: ActivityModule = ActivityModule(this)
-
-    @Inject
-    lateinit var presenter: PRESENTER
+    protected lateinit var presenter: PRESENTER
 
     protected fun subscribeToViewState() {
         disposable = presenter.getStateObservable().subscribeOn(Schedulers.io())
@@ -37,6 +34,8 @@ abstract class BaseActivity<VIEW_STATE : Serializable, PRESENTER : BasePresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        bindScope(getOrCreateScope(SINGLE_ACTIVITY_SCOPE))
 
         if (!BuildConfig.DEBUG) {
             window

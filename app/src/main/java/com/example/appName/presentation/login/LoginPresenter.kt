@@ -6,9 +6,8 @@ import com.example.appName.presentation.login.validation.PasswordValidator
 import com.example.appName.presentation.login.validation.UsernameValidator
 import com.example.appName.presentation.utils.ApplicationNavigator
 import io.reactivex.Observable
-import javax.inject.Inject
 
-class LoginPresenter @Inject constructor(private val view: LoginView,
+class LoginPresenter constructor(private val view: LoginView,
                                          private val userRepository: UserRepository,
                                          private val applicationNavigator: ApplicationNavigator,
                                          initialState: LoginViewState) : BasePresenter<LoginViewState, LoginPartialState>() {

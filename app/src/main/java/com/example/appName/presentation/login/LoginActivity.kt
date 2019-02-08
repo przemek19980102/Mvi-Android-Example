@@ -1,23 +1,21 @@
 package com.example.appName.presentation.login
 
 import android.os.Bundle
-import android.widget.EditText
 import com.example.appName.R
-import com.example.appName.data.di.DataModule
 import com.example.appName.presentation.base.BaseActivity
-import com.example.appName.presentation.login.di.DaggerLoginComponent
-import com.example.appName.presentation.login.di.LoginModule
+import com.example.appName.presentation.login.di.LOGIN_ACTIVITY_SCOPE
 import com.example.appName.presentation.login.validation.PasswordValidator
 import com.example.appName.presentation.login.validation.UsernameValidator
 import com.example.appName.presentation.login.validation.getMessage
 import com.example.appName.presentation.utils.createTextChangesObservable
 import com.example.appName.presentation.utils.getMessage
 import com.jakewharton.rxbinding2.view.RxView
-import com.jakewharton.rxbinding2.widget.RxTextView
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.activity_login.*
 import org.jetbrains.anko.alert
-import java.util.concurrent.TimeUnit
+import org.koin.android.ext.android.get
+import org.koin.android.scope.ext.android.getOrCreateScope
+import org.koin.core.parameter.parametersOf
 
 private const val MAIN_VIEW_INDEX = 0
 private const val LOADING_VIEW_INDEX = 1
@@ -47,13 +45,11 @@ class LoginActivity : BaseActivity<LoginViewState, LoginPresenter>(), LoginView 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        getOrCreateScope(LOGIN_ACTIVITY_SCOPE)
+
         setContentView(R.layout.activity_login)
 
-        DaggerLoginComponent.builder()
-                .loginModule(LoginModule(this, savedInstanceState))
-                .activityModule(activityModule)
-                .dataModule(DataModule())
-                .build().inject(this)
+        presenter = get { parametersOf(this@LoginActivity, savedInstanceState) }
 
         subscribeToViewState()
     }

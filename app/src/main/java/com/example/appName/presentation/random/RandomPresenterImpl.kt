@@ -4,7 +4,6 @@ import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.BehaviorSubject
 import java.util.*
-import javax.inject.Inject
 
 interface RandomPresenter {
     fun getStateObservable(): Observable<RandomViewState>

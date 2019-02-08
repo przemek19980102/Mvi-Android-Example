@@ -1,23 +1,19 @@
 package com.example.appName.presentation.login.di
 
 import android.os.Bundle
-import com.example.appName.presentation.login.KEY_SAVED_ACTIVITY_VIEW_STATE
-import com.example.appName.presentation.login.LoginActivity
-import com.example.appName.presentation.login.LoginView
-import com.example.appName.presentation.login.LoginViewState
-import dagger.Module
-import dagger.Provides
+import com.example.appName.presentation.login.*
+import org.koin.core.parameter.parametersOf
+import org.koin.dsl.module.module
 
-@Module
-class LoginModule(private val activity: LoginActivity,
-                  private val savedInstanceState: Bundle?) {
+const val LOGIN_ACTIVITY_SCOPE = "loginActivityScope"
 
-    @Provides
-    fun provideLoginView(): LoginView = activity
+val loginModule = module {
+    scope(LOGIN_ACTIVITY_SCOPE) { (savedInstanceState: Bundle?) ->
+        savedInstanceState?.getSerializable(KEY_SAVED_ACTIVITY_VIEW_STATE) as? LoginViewState
+                ?: LoginViewState()
+    }
 
-    @Provides
-    fun provideSavedViewState(): LoginViewState =
-            savedInstanceState?.getSerializable(
-                    KEY_SAVED_ACTIVITY_VIEW_STATE) as? LoginViewState
-                    ?: LoginViewState()
+    scope(LOGIN_ACTIVITY_SCOPE) { (loginActivity: LoginActivity, savedInstanceState: Bundle?) ->
+        LoginPresenter(loginActivity, get(), get { parametersOf(loginActivity) }, get { parametersOf(savedInstanceState) })
+    }
 }

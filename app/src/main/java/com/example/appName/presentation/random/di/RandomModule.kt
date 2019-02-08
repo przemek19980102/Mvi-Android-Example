@@ -2,26 +2,20 @@ package com.example.appName.presentation.random.di
 
 import android.os.Bundle
 import com.example.appName.presentation.random.*
-import dagger.Module
-import dagger.Provides
+import org.koin.core.parameter.parametersOf
+import org.koin.dsl.module.module
 import java.util.*
 
-@Module
-class RandomModule(private val activity: RandomActivity,
-                   private val savedInstanceState: Bundle?) {
+const val RANDOM_SCOPE = "randomScope"
 
-    @Provides
-    fun provideLoginView(): RandomView = activity
+val randomModule = module {
+    factory { Random() }
 
-    @Provides
-    fun provideSavedViewState(): RandomViewState =
-            savedInstanceState?.getSerializable(
-                    KEY_SAVED_ACTIVITY_VIEW_STATE) as? RandomViewState
-                    ?: RandomViewState()
+    factory { (savedInstanceState: Bundle?) ->
+        savedInstanceState?.getSerializable(
+                KEY_SAVED_ACTIVITY_VIEW_STATE) as? RandomViewState
+                ?: RandomViewState()
+    }
 
-    @Provides
-    fun provideRandomNumberGenerator(): Random = Random()
-
-    @Provides
-    fun provideRandomPresenter(randomView: RandomView, random: Random, initialViewState: RandomViewState): RandomPresenter = RandomPresenterImpl(randomView, random, initialViewState)
+    scope<RandomPresenter>(RANDOM_SCOPE) { (randomActivity: RandomActivity, savedInstanceState: Bundle?) -> RandomPresenterImpl(randomActivity, get(), get { parametersOf(savedInstanceState) }) }
 }

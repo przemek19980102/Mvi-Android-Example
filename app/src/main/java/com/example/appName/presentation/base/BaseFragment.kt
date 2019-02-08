@@ -6,14 +6,12 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import java.io.Serializable
-import javax.inject.Inject
 
 const val KEY_SAVED_FRAGMENT_STATE = "dashboardState"
 
 abstract class BaseFragment<VIEW_STATE : Serializable, PRESENTER : BasePresenter<VIEW_STATE, *>> : Fragment() {
     private var disposable: Disposable? = null
 
-    @Inject
     lateinit var presenter: PRESENTER
 
     protected fun subscribeToViewState() {

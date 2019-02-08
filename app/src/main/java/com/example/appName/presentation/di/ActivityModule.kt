@@ -1,13 +1,12 @@
 package com.example.appName.presentation.di
 
-import android.support.v7.app.AppCompatActivity
+import android.app.Activity
 import com.example.appName.presentation.utils.ApplicationNavigator
-import dagger.Module
-import dagger.Provides
+import org.koin.dsl.module.Module
+import org.koin.dsl.module.module
 
-@Module
-class ActivityModule(private val baseActivity: AppCompatActivity) {
-    @Provides
-    fun provideApplicationNavigator() =
-            ApplicationNavigator(baseActivity)
+const val SINGLE_ACTIVITY_SCOPE = "activityScope"
+
+val activityModule: Module = module {
+    scope(SINGLE_ACTIVITY_SCOPE) { (activity: Activity) -> ApplicationNavigator(activity) }
 }

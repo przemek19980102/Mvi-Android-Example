@@ -4,21 +4,23 @@ import android.os.Bundle
 import android.support.annotation.VisibleForTesting
 import android.support.v7.app.AppCompatActivity
 import com.example.appName.R
-import com.example.appName.presentation.random.di.DaggerRandomComponent
-import com.example.appName.presentation.random.di.RandomModule
+import com.example.appName.presentation.di.SINGLE_ACTIVITY_SCOPE
+import com.example.appName.presentation.random.di.RANDOM_SCOPE
 import com.jakewharton.rxbinding2.view.RxView
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_random.*
-import javax.inject.Inject
+import org.koin.android.ext.android.get
+import org.koin.android.scope.ext.android.bindScope
+import org.koin.android.scope.ext.android.getOrCreateScope
+import org.koin.core.parameter.parametersOf
 
 const val KEY_SAVED_ACTIVITY_VIEW_STATE = "viewState"
 
 class RandomActivity : AppCompatActivity(), RandomView {
     //region Properties
-    @Inject
     lateinit var presenter: RandomPresenter
 
     private var disposable: Disposable? = null
@@ -36,11 +38,12 @@ class RandomActivity : AppCompatActivity(), RandomView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        bindScope(getOrCreateScope(SINGLE_ACTIVITY_SCOPE))
+        bindScope(getOrCreateScope(RANDOM_SCOPE))
+
         setContentView(R.layout.activity_random)
 
-        DaggerRandomComponent.builder()
-                .randomModule(RandomModule(this, savedInstanceState))
-                .build().inject(this)
+        presenter = get { parametersOf(this, savedInstanceState) }
 
         subscribeToViewState()
     }
