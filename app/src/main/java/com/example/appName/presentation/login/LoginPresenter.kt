@@ -9,12 +9,11 @@ import io.reactivex.Observable
 
 class LoginPresenter constructor(private val view: LoginView,
                                          private val userRepository: UserRepository,
-                                         private val applicationNavigator: ApplicationNavigator,
-                                         initialState: LoginViewState) : BasePresenter<LoginViewState, LoginPartialState>() {
+                                         private val applicationNavigator: ApplicationNavigator) : BasePresenter<LoginViewState, LoginPartialState>() {
 
     //region Intent methods
     init {
-        subscribeToViewIntents(initialState,
+        subscribeToViewIntents(LoginViewState(),
                 createChangeUsernameObservable(),
                 createChangePasswordObservable(),
                 createRegisterObservable(),

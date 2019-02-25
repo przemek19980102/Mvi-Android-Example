@@ -12,13 +12,12 @@ interface RandomPresenter {
 }
 
 class RandomPresenterImpl(private val view: RandomView,
-                          private val random: Random,
-                          initialState: RandomViewState) : RandomPresenter {
+                          private val random: Random) : RandomPresenter {
     private val stateSubject: BehaviorSubject<RandomViewState> = BehaviorSubject.create()
     private lateinit var viewIntentsDisposable: Disposable
 
     init {
-        subscribeToViewIntents(initialState, createRollFirstObservable(),
+        subscribeToViewIntents(RandomViewState(), createRollFirstObservable(),
                 createRollSecondObservable())
     }
 

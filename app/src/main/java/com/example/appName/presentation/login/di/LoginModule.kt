@@ -13,7 +13,7 @@ val loginModule = module {
                 ?: LoginViewState()
     }
 
-    scope(LOGIN_ACTIVITY_SCOPE) { (loginActivity: LoginActivity, savedInstanceState: Bundle?) ->
-        LoginPresenter(loginActivity, get(), get { parametersOf(loginActivity) }, get { parametersOf(savedInstanceState) })
+    scope(LOGIN_ACTIVITY_SCOPE) { (loginActivity: LoginActivity) ->
+        LoginPresenter(loginActivity, get(), get { parametersOf(loginActivity) })
     }
 }

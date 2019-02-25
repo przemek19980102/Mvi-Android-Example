@@ -12,8 +12,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_random.*
-import org.koin.android.ext.android.get
-import org.koin.android.scope.ext.android.bindScope
+import org.koin.android.ext.android.inject
 import org.koin.android.scope.ext.android.getOrCreateScope
 import org.koin.core.parameter.parametersOf
 
@@ -21,7 +20,7 @@ const val KEY_SAVED_ACTIVITY_VIEW_STATE = "viewState"
 
 class RandomActivity : AppCompatActivity(), RandomView {
     //region Properties
-    lateinit var presenter: RandomPresenter
+    private val presenter: RandomPresenter by inject { parametersOf(this@RandomActivity) }
 
     private var disposable: Disposable? = null
     //endregion
@@ -38,12 +37,10 @@ class RandomActivity : AppCompatActivity(), RandomView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        bindScope(getOrCreateScope(SINGLE_ACTIVITY_SCOPE))
-        bindScope(getOrCreateScope(RANDOM_SCOPE))
+        getOrCreateScope(SINGLE_ACTIVITY_SCOPE)
+        getOrCreateScope(RANDOM_SCOPE)
 
         setContentView(R.layout.activity_random)
-
-        presenter = get { parametersOf(this, savedInstanceState) }
 
         subscribeToViewState()
     }

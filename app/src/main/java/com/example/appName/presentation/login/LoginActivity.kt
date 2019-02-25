@@ -13,8 +13,9 @@ import com.jakewharton.rxbinding2.view.RxView
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.activity_login.*
 import org.jetbrains.anko.alert
-import org.koin.android.ext.android.get
+import org.koin.android.ext.android.inject
 import org.koin.android.scope.ext.android.getOrCreateScope
+import org.koin.android.scope.ext.android.getScope
 import org.koin.core.parameter.parametersOf
 
 private const val MAIN_VIEW_INDEX = 0
@@ -26,6 +27,8 @@ class LoginActivity : BaseActivity<LoginViewState, LoginPresenter>(), LoginView 
     //region Intents
     override val changeUsernameIntent: Observable<String>
         get() = loginUsername.createTextChangesObservable()
+
+    override val presenter: LoginPresenter by inject { parametersOf(this@LoginActivity) }
 
     override val changePasswordIntent: Observable<String>
         get() = loginPassword.createTextChangesObservable()
@@ -49,8 +52,6 @@ class LoginActivity : BaseActivity<LoginViewState, LoginPresenter>(), LoginView 
 
         setContentView(R.layout.activity_login)
 
-        presenter = get { parametersOf(this@LoginActivity, savedInstanceState) }
-
         subscribeToViewState()
     }
 
@@ -58,6 +59,12 @@ class LoginActivity : BaseActivity<LoginViewState, LoginPresenter>(), LoginView 
         super.onSaveInstanceState(outState)
 
         outState.putSerializable(KEY_SAVED_ACTIVITY_VIEW_STATE, presenter.getCurrentViewState())
+    }
+
+    override fun finish() {
+        super.finish()
+
+        getScope(LOGIN_ACTIVITY_SCOPE).close()
     }
     //endregion
 

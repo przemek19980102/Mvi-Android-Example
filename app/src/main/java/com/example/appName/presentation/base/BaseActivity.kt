@@ -16,7 +16,7 @@ import java.io.Serializable
 abstract class BaseActivity<VIEW_STATE : Serializable, PRESENTER : BasePresenter<VIEW_STATE, *>> : AppCompatActivity() {
     private var disposable: Disposable? = null
 
-    protected lateinit var presenter: PRESENTER
+    abstract val presenter: PRESENTER
 
     protected fun subscribeToViewState() {
         disposable = presenter.getStateObservable().subscribeOn(Schedulers.io())
