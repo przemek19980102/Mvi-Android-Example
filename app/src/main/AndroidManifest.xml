@@ -2,6 +2,7 @@
     package="com.example.appName">
 
     <application
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -9,15 +10,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".presentation.random.RandomActivity"
+            android:name=".feature.random.RandomActivity"
+            android:exported="true" />
+        <activity
+            android:name=".feature.login.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".presentation.login.LoginActivity"
-            android:exported="true" />
     </application>
 </manifest>
