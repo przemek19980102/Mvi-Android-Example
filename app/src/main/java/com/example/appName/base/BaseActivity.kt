@@ -5,7 +5,6 @@ import android.support.annotation.LayoutRes
 import android.view.MenuItem
 import android.view.WindowManager
 import com.example.appName.BuildConfig
-import com.example.appName.R
 import com.example.appName.common.extension.goToMainScreen
 import com.example.appName.common.extension.goToRegisterActivity
 import dagger.android.DaggerActivity
@@ -15,11 +14,14 @@ import io.reactivex.schedulers.Schedulers
 import java.io.Serializable
 import javax.inject.Inject
 
-abstract class BaseActivity<VIEW_STATE : Serializable, PRESENTER : BasePresenter<VIEW_STATE, *>>(@LayoutRes layoutId: Int) : DaggerActivity(), BaseView {
-    private var disposable: Disposable? = null
+abstract class BaseActivity<VIEW_STATE : Serializable, PRESENTER : BasePresenter<VIEW_STATE, *>>(@LayoutRes val layoutId: Int) : DaggerActivity(), BaseView {
 
     @Inject
     lateinit var presenter: PRESENTER
+    var savedInstanceState: Bundle? = null
+
+
+    private var disposable: Disposable? = null
 
     protected fun subscribeToViewState() {
         disposable = presenter.getStateObservable().subscribeOn(Schedulers.io())
@@ -36,10 +38,11 @@ abstract class BaseActivity<VIEW_STATE : Serializable, PRESENTER : BasePresenter
             }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        bindView()
+        this.savedInstanceState = savedInstanceState
+        inflateView()
         super.onCreate(savedInstanceState)
         subscribeToViewState()
-        onViewReady()
+        onViewReady(savedInstanceState)
 
         if (!BuildConfig.DEBUG) {
             window.setFlags(
@@ -49,6 +52,13 @@ abstract class BaseActivity<VIEW_STATE : Serializable, PRESENTER : BasePresenter
         }
     }
 
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+
+        val viewState = presenter.getCurrentViewState()
+        outState?.putSerializable(KEY_SAVED_ACTIVITY_VIEW_STATE, viewState)
+    }
+
     override fun onDestroy() {
         super.onDestroy()
 
@@ -56,11 +66,11 @@ abstract class BaseActivity<VIEW_STATE : Serializable, PRESENTER : BasePresenter
         disposable?.dispose()
     }
 
-    fun bindView() {
-        setContentView(R.layout.activity_login)
+    private fun inflateView() {
+        setContentView(layoutId)
     }
 
-    abstract fun onViewReady()
+    abstract fun onViewReady(savedInstanceState: Bundle?)
 
     abstract fun render(viewState: VIEW_STATE)
 
@@ -74,5 +84,9 @@ abstract class BaseActivity<VIEW_STATE : Serializable, PRESENTER : BasePresenter
 
     override fun goToMainFeature() {
         goToMainScreen()
+    }
+
+    companion object {
+        const val KEY_SAVED_ACTIVITY_VIEW_STATE = "viewState"
     }
 }

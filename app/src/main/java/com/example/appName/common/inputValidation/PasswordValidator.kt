@@ -1,4 +1,4 @@
-package com.example.appName.feature.login.validation
+package com.example.appName.common.inputValidation
 
 object PasswordValidator {
     fun validate(password: String): ValidationResult =

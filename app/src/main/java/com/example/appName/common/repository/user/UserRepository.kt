@@ -1,7 +1,7 @@
 package com.example.appName.common.repository.user
 
 import com.example.appName.common.data.UserDataSource
-import com.example.appName.domain.User
+import com.example.appName.common.model.domain.User
 import io.reactivex.Single
 
 class UserRepository(val userDataSource: UserDataSource) {

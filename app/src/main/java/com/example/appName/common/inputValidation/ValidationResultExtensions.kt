@@ -1,4 +1,4 @@
-package com.example.appName.feature.login.validation
+package com.example.appName.common.inputValidation
 
 import android.content.Context
 import com.example.appName.R

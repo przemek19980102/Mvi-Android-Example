@@ -1,19 +1,20 @@
 package com.example.appName.feature.login
 
 import com.example.appName.base.BasePresenter
+import com.example.appName.common.inputValidation.PasswordValidator
+import com.example.appName.common.inputValidation.UsernameValidator
 import com.example.appName.common.repository.user.UserRepository
-import com.example.appName.feature.login.validation.PasswordValidator
-import com.example.appName.feature.login.validation.UsernameValidator
 import io.reactivex.Observable
 
-class LoginPresenter(private val view: LoginView,
-                     private val userRepository: UserRepository
-        //initialState: LoginViewState
-) : BasePresenter<LoginViewState, LoginPartialState>() {
+class LoginPresenter(
+        private val view: LoginView,
+        private val userRepository: UserRepository,
+        initialState: LoginViewState
+) : BasePresenter<LoginViewState, LoginViewState.PartialState>() {
 
     //region Intent methods
     init {
-        subscribeToViewIntents(LoginViewState(),
+        subscribeToViewIntents(initialState,
                 createChangeUsernameObservable(),
                 createChangePasswordObservable(),
                 createRegisterObservable(),
@@ -21,57 +22,57 @@ class LoginPresenter(private val view: LoginView,
         )
     }
 
-    private fun createChangeUsernameObservable(): Observable<LoginPartialState> =
+    private fun createChangeUsernameObservable(): Observable<LoginViewState.PartialState> =
             view.changeUsernameIntent
                     .map { UsernameValidator.validate(it) }
-                    .map { LoginPartialState.UsernameValidated(it) as LoginPartialState }
+                    .map { LoginViewState.PartialState.UsernameValidated(it) as LoginViewState.PartialState }
 
-    private fun createChangePasswordObservable(): Observable<LoginPartialState> =
+    private fun createChangePasswordObservable(): Observable<LoginViewState.PartialState> =
             view.changePasswordIntent
                     .map { PasswordValidator.validate(it) }
-                    .map { LoginPartialState.PasswordValidated(it) as LoginPartialState }
+                    .map { LoginViewState.PartialState.PasswordValidated(it) as LoginViewState.PartialState }
 
-    private fun createLoginObservable(): Observable<LoginPartialState> = view.loginIntent
+    private fun createLoginObservable(): Observable<LoginViewState.PartialState> = view.loginIntent
             .flatMap { loginData ->
                 userRepository
                         .login(loginData.username, loginData.password).toObservable()
-                        .map { LoginPartialState.LoginCompleted() as LoginPartialState }
+                        .map { LoginViewState.PartialState.LoginCompleted() as LoginViewState.PartialState }
                         .doOnNext {
                             view.apply {
                                 goToMainFeature()
                                 finishCurrentFeature()
                             }
                         }
-                        .startWith(LoginPartialState.Loading())
-                        .onErrorReturn { LoginPartialState.LoginError(it) }
+                        .startWith(LoginViewState.PartialState.Loading())
+                        .onErrorReturn { LoginViewState.PartialState.LoginError(it) }
             }
 
-    private fun createRegisterObservable(): Observable<LoginPartialState> = view.registerIntent
+    private fun createRegisterObservable(): Observable<LoginViewState.PartialState> = view.registerIntent
             .doOnNext { view.apply { goToRegisterFeature() } }
-            .map { LoginPartialState.NoOp() }
+            .map { LoginViewState.PartialState.NoOp() }
 
     //endregion
 
-    override fun reduceViewState(previousState: LoginViewState, partialState: LoginPartialState) =
+    override fun reduceViewState(previousState: LoginViewState, partialState: LoginViewState.PartialState) =
             when (partialState) {
-                is LoginPartialState.UsernameValidated ->
+                is LoginViewState.PartialState.UsernameValidated ->
                     LoginViewState(
                             previousState,
                             usernameValidationResult = partialState.usernameValidationResult)
-                is LoginPartialState.PasswordValidated ->
+                is LoginViewState.PartialState.PasswordValidated ->
                     LoginViewState(
                             previousState,
                             passwordValidationResult = partialState.passwordValidationResult)
-                is LoginPartialState.Loading -> LoginViewState(previousState,
+                is LoginViewState.PartialState.Loading -> LoginViewState(previousState,
                         loading = true)
-                is LoginPartialState.LoginError ->
+                is LoginViewState.PartialState.LoginError ->
                     LoginViewState(
                             previousState,
                             error = partialState.throwable)
-                is LoginPartialState.LoginCompleted ->
+                is LoginViewState.PartialState.LoginCompleted ->
                     LoginViewState(
                             previousState,
                             successful = true)
-                is LoginPartialState.NoOp -> previousState
+                is LoginViewState.PartialState.NoOp -> previousState
             }
 }

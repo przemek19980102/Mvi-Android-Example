@@ -2,7 +2,7 @@ package com.example.appName.common.data.mock
 
 import android.app.Application
 import com.example.appName.common.data.UserDataSource
-import com.example.appName.domain.User
+import com.example.appName.common.model.domain.User
 import io.reactivex.Single
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject

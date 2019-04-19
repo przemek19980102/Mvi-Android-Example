@@ -1,3 +1,3 @@
-package com.example.appName.domain.exceptions
+package com.example.appName.common.exceptions
 
 data class HttpException(val responseCode: Int) : Exception()
