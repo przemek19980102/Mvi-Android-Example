@@ -1,13 +1,11 @@
 package com.example.appName.feature.login
 
-import android.os.Bundle
 import com.example.appName.R
 import com.example.appName.base.BaseActivity
 import com.example.appName.common.extension.createTextChangesObservable
 import com.example.appName.common.extension.getMessage
 import com.example.appName.common.inputValidation.PasswordValidator
 import com.example.appName.common.inputValidation.UsernameValidator
-import com.example.appName.common.inputValidation.getMessage
 import com.example.appName.common.model.request.LoginRequest
 import com.jakewharton.rxbinding2.view.RxView
 import io.reactivex.Observable
@@ -34,10 +32,6 @@ class LoginActivity : BaseActivity<LoginViewState, LoginPresenter>(
     override val registerIntent: Observable<Any>
         get() = RxView.clicks(loginRegisterButton)
     //endregion
-
-    override fun onViewReady(savedInstanceState: Bundle?) {
-
-    }
 
     //region Render methods
     override fun render(viewState: LoginViewState) {

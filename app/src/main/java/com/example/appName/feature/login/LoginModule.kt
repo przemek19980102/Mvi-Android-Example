@@ -1,7 +1,7 @@
 package com.example.appName.feature.login
 
 import com.example.appName.base.BaseActivity.Companion.KEY_SAVED_ACTIVITY_VIEW_STATE
-import com.example.appName.common.repository.user.UserRepository
+import com.example.appName.common.data.repository.user.UserRepository
 import dagger.Module
 import dagger.Provides
 

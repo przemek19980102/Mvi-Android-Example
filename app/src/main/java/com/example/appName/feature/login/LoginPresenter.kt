@@ -1,9 +1,9 @@
 package com.example.appName.feature.login
 
 import com.example.appName.base.BasePresenter
+import com.example.appName.common.data.repository.user.UserRepository
 import com.example.appName.common.inputValidation.PasswordValidator
 import com.example.appName.common.inputValidation.UsernameValidator
-import com.example.appName.common.repository.user.UserRepository
 import io.reactivex.Observable
 
 class LoginPresenter(

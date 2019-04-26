@@ -1,6 +1,7 @@
 package com.example.appName.base
 
 import android.os.Bundle
+import android.support.annotation.CallSuper
 import android.support.annotation.LayoutRes
 import android.view.MenuItem
 import android.view.WindowManager
@@ -37,12 +38,12 @@ abstract class BaseActivity<VIEW_STATE : Serializable, PRESENTER : BasePresenter
                 else -> super.onOptionsItemSelected(item)
             }
 
+    @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
         this.savedInstanceState = savedInstanceState
         inflateView()
         super.onCreate(savedInstanceState)
         subscribeToViewState()
-        onViewReady(savedInstanceState)
 
         if (!BuildConfig.DEBUG) {
             window.setFlags(
@@ -69,8 +70,6 @@ abstract class BaseActivity<VIEW_STATE : Serializable, PRESENTER : BasePresenter
     private fun inflateView() {
         setContentView(layoutId)
     }
-
-    abstract fun onViewReady(savedInstanceState: Bundle?)
 
     abstract fun render(viewState: VIEW_STATE)
 

@@ -1,4 +1,4 @@
-package com.example.appName.common.repository.user
+package com.example.appName.common.data.repository.user
 
 import android.app.Application
 import com.example.appName.common.data.UserDataSource

@@ -1,7 +1,9 @@
-package com.example.appName.common.inputValidation
+package com.example.appName.common.extension
 
 import android.content.Context
 import com.example.appName.R
+import com.example.appName.common.inputValidation.PasswordValidator
+import com.example.appName.common.inputValidation.UsernameValidator
 
 fun UsernameValidator.ValidationResult.getMessage(context: Context): String? =
         when (this) {

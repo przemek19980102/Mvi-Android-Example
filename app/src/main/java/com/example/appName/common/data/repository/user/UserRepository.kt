@@ -1,4 +1,4 @@
-package com.example.appName.common.repository.user
+package com.example.appName.common.data.repository.user
 
 import com.example.appName.common.data.UserDataSource
 import com.example.appName.common.model.domain.User

@@ -1,6 +1,5 @@
 package com.example.appName.feature.random
 
-import android.os.Bundle
 import com.example.appName.R
 import com.example.appName.base.BaseActivity
 import com.jakewharton.rxbinding2.view.RxView
@@ -17,10 +16,6 @@ class RandomActivity : BaseActivity<RandomViewState, RandomPresenter>(
     override val rollSecondIntent: Observable<Any>
         get() = RxView.clicks(randomRollSecondNumber)
     //endregion
-
-    override fun onViewReady(savedInstanceState: Bundle?) {
-
-    }
 
     override fun render(viewState: RandomViewState) {
         randomFirstNumber.text = viewState.firstRoll.toString()
