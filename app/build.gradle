@@ -18,7 +18,7 @@ android {
         minSdkVersion config.minSdk
         targetSdkVersion config.targetSdk
         compileSdkVersion config.compileSdk
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         versionCode config.verCode
         versionName config.verName
         multiDexEnabled config.enableMultidex
@@ -56,10 +56,4 @@ dependencies {
     instrumentedTestDependencies.each {
         add("androidTestImplementation", it)
     }
-
-    implementation 'com.google.dagger:dagger-android:2.16'
-    implementation 'com.google.dagger:dagger-android-support:2.16'
-    kapt 'com.google.dagger:dagger-android-processor:2.16'
-    implementation 'com.google.dagger:dagger:2.16'
-    kapt 'com.google.dagger:dagger-compiler:2.16'
 }

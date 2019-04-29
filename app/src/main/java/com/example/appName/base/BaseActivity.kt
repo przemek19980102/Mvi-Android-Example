@@ -1,33 +1,38 @@
 package com.example.appName.base
 
 import android.os.Bundle
-import android.support.annotation.CallSuper
-import android.support.annotation.LayoutRes
 import android.view.MenuItem
 import android.view.WindowManager
+import androidx.annotation.CallSuper
+import androidx.annotation.LayoutRes
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.example.appName.BuildConfig
 import com.example.appName.common.extension.goToMainScreen
 import com.example.appName.common.extension.goToRegisterActivity
-import dagger.android.DaggerActivity
+import dagger.android.AndroidInjection
+import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.support.HasSupportFragmentInjector
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import java.io.Serializable
 import javax.inject.Inject
 
-abstract class BaseActivity<VIEW_STATE : Serializable, PRESENTER : BasePresenter<VIEW_STATE, *>>(@LayoutRes val layoutId: Int) : DaggerActivity(), BaseView {
+abstract class BaseActivity<VIEW_STATE : Serializable, PRESENTER : BasePresenter<VIEW_STATE, *>>(
+        @LayoutRes val layoutId: Int
+) : AppCompatActivity(), BaseView, HasSupportFragmentInjector {
 
     @Inject
     lateinit var presenter: PRESENTER
+
+    @Inject
+    lateinit var fragmentInjector: DispatchingAndroidInjector<Fragment>
+
     var savedInstanceState: Bundle? = null
 
-
     private var disposable: Disposable? = null
-
-    protected fun subscribeToViewState() {
-        disposable = presenter.getStateObservable().subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread()).subscribe(this::render)
-    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean =
             when (item.itemId) {
@@ -40,9 +45,11 @@ abstract class BaseActivity<VIEW_STATE : Serializable, PRESENTER : BasePresenter
 
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidInjection.inject(this)
+        super.onCreate(savedInstanceState)
+
         this.savedInstanceState = savedInstanceState
         inflateView()
-        super.onCreate(savedInstanceState)
         subscribeToViewState()
 
         if (!BuildConfig.DEBUG) {
@@ -51,6 +58,11 @@ abstract class BaseActivity<VIEW_STATE : Serializable, PRESENTER : BasePresenter
                     WindowManager.LayoutParams.FLAG_SECURE
             )
         }
+        bind()
+    }
+
+    override fun supportFragmentInjector(): AndroidInjector<Fragment> {
+        return fragmentInjector
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
@@ -67,12 +79,6 @@ abstract class BaseActivity<VIEW_STATE : Serializable, PRESENTER : BasePresenter
         disposable?.dispose()
     }
 
-    private fun inflateView() {
-        setContentView(layoutId)
-    }
-
-    abstract fun render(viewState: VIEW_STATE)
-
     override fun finishCurrentFeature() {
         finish()
     }
@@ -84,6 +90,21 @@ abstract class BaseActivity<VIEW_STATE : Serializable, PRESENTER : BasePresenter
     override fun goToMainFeature() {
         goToMainScreen()
     }
+
+    protected fun subscribeToViewState() {
+        disposable = presenter.getStateObservable().subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread()).subscribe(this::render)
+    }
+
+    private fun inflateView() {
+        setContentView(layoutId)
+    }
+
+    open fun bind() {
+
+    }
+
+    abstract fun render(viewState: VIEW_STATE)
 
     companion object {
         const val KEY_SAVED_ACTIVITY_VIEW_STATE = "viewState"

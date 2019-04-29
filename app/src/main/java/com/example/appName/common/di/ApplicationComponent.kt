@@ -12,6 +12,7 @@ import dagger.android.support.AndroidSupportInjectionModule
     AndroidSupportInjectionModule::class,
     ApplicationModule::class,
     ActivityModule::class,
+    FragmentModule::class,
     UserRepositoryModule::class
 ])
 interface ApplicationComponent {

@@ -2,6 +2,7 @@ package com.example.appName.feature.login
 
 import com.example.appName.R
 import com.example.appName.base.BaseActivity
+import com.example.appName.common.delegate.IntentDelegate
 import com.example.appName.common.extension.createTextChangesObservable
 import com.example.appName.common.extension.getMessage
 import com.example.appName.common.inputValidation.PasswordValidator
@@ -16,21 +17,25 @@ class LoginActivity : BaseActivity<LoginViewState, LoginPresenter>(
         R.layout.activity_login
 ), LoginView {
     //region Intents
-    override val changeUsernameIntent: Observable<String>
-        get() = loginUsername.createTextChangesObservable()
+    override val changeUsernameIntent: Observable<String> by IntentDelegate(this) {
+        loginUsername.createTextChangesObservable()
+    }
 
-    override val changePasswordIntent: Observable<String>
-        get() = loginPassword.createTextChangesObservable()
+    override val changePasswordIntent: Observable<String> by IntentDelegate(this) {
+        loginPassword.createTextChangesObservable()
+    }
 
-    override val loginIntent: Observable<LoginRequest>
-        get() = RxView.clicks(loginButton).map {
+    override val loginIntent: Observable<LoginRequest> by IntentDelegate(this) {
+        RxView.clicks(loginButton).map {
             val username = loginUsername.text.toString()
             val password = loginPassword.text.toString()
             LoginRequest(username, password)
         }
+    }
 
-    override val registerIntent: Observable<Any>
-        get() = RxView.clicks(loginRegisterButton)
+    override val registerIntent: Observable<Any> by IntentDelegate(this) {
+        RxView.clicks(loginRegisterButton)
+    }
     //endregion
 
     //region Render methods
