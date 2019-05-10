@@ -10,13 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".feature.random.RandomActivity"
+            android:name=".presentation.random.RandomActivity"
             android:exported="true" />
         <activity
-            android:name=".feature.login.LoginActivity"
+            android:name=".presentation.login.LoginActivity"
             android:exported="true"></activity>
         <activity
-            android:name=".feature.sum.SumActivity"
+            android:name=".presentation.sum.SumActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

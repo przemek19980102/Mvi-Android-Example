@@ -2,7 +2,7 @@ package com.example.appName.common.di
 
 import android.app.Application
 import com.example.appName.MyApplication
-import com.example.appName.common.data.repository.user.UserRepositoryModule
+import com.example.appName.data.repository.user.UserRepositoryModule
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.support.AndroidSupportInjectionModule
@@ -11,8 +11,8 @@ import dagger.android.support.AndroidSupportInjectionModule
 @Component(modules = [
     AndroidSupportInjectionModule::class,
     ApplicationModule::class,
-    ActivityModule::class,
-    FragmentModule::class,
+    ActivityInjector::class,
+    FragmentInjector::class,
     UserRepositoryModule::class
 ])
 interface ApplicationComponent {
