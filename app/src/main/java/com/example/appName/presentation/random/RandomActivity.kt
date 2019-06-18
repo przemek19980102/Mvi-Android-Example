@@ -2,10 +2,12 @@ package com.example.appName.presentation.random
 
 import com.example.appName.R
 import com.example.appName.presentation.base.BaseActivity
+import com.example.binder_annotations.AndroidInjectable
 import com.jakewharton.rxbinding2.view.RxView
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.activity_random.*
 
+@AndroidInjectable(RandomModule::class)
 class RandomActivity : BaseActivity<RandomViewState, RandomPresenter>(
         R.layout.activity_random
 ), RandomView {

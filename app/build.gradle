@@ -40,6 +40,9 @@ android {
 }
 
 dependencies {
+    implementation project(':binder-annotations')
+    kapt project(':binder-generator')
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementationDependencies.each {
         add("implementation", it)

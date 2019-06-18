@@ -10,12 +10,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.appName.R
 import com.example.appName.presentation.base.BaseActivity
 import com.example.appName.presentation.sum.calculation.CalculationFragment
+import com.example.binder_annotations.AndroidInjectable
+import com.example.binder_annotations.AndroidInjectableModule
 import com.jakewharton.rxbinding2.widget.textChanges
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.activity_sum.*
 import kotlinx.android.synthetic.main.view_balance_card.view.*
 
-
+@AndroidInjectableModule
+@AndroidInjectable(SumModule::class)
 class SumActivity : BaseActivity<SumViewState, SumPresenter>(
         R.layout.activity_sum
 ), SumView {
